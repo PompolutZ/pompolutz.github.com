@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <link rel="stylesheet" type="text/css" href="../css/core.css">
+        <title>Oleh Lutsenko</title>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+            </header>
+            <aside>
+                <h1>Oleh Lutsenko</h1>
+                <div id="navigation">
+                    <a href="../">Home</a>
+                    <a href="../about.html">About</a>
+                    <a href="../contact.html">Contact</a>
+                    <a href="../projects.html">Projects</a>
+                    <a href="../archive.html">Archive</a>
+                </div>
+            </aside>
+            <article>
+                <h2>Getting started with Hakyll</h2>
+
+                <div class="info">Posted on April  5, 2013</div>
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sons-of-obsidian"></script>
+<h1 id="introduction">Introduction</h1>
+<p>One day you've decided, like I did, to create your personal page with/or without blog. There are plenty of ways to do this, depending on your personal programming experience, level of lazyness and geekness. But I guess that making your personal page just to show off yourself don't require buying hosting and domain to create complex and mature website. So the most simple way to reach mentioned goal is to create a static website. Because:</p>
+<blockquote>
+<p>Static sites are fast, secure, easy to deploy, and manageable using version control.</p>
+</blockquote>
+<p>I think there are no need to proof those reasons because they are rather clear.</p>
+<p>That very day I came up with a decision to create my personal page, I discovered that it is possible to make one on github. You can manage deployment via 'git push -u origin master', so it should be easy. But first you have to find some static site builder, because it will help you a lot to create everythin once, push, and then just time to time add your posts, projects or any other informaion. The most popular static site builder (SSB) Gekyll appeared to be a problem on my Windows based machines, so I've found a list of alternatives where I discovered <a href="http://jaspervdj.be/hakyll/" title="hakyll">Hakyll</a>. Because for a long time I wanted to find good way to start using Haskell for something I decided to give it a shot. And this is story how you can go by my steps :)</p>
+<h1 id="step-1.-setup">Step 1. Setup</h1>
+<p>Good way to start will be downloading <a href="http://www.haskell.org/platform/windows.html">Haskell Platform</a>. After installation you will receive:</p>
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Glasgow_Haskell_Compiler" title="GHC">Glasgow Haskell Compiler</a> - one of the most popular ones I guess.</li>
+<li>GHC interactive environment - both in console mode and wrapped in a WinGHC application.</li>
+<li><a href="http://www.haskell.org/cabal/" title="cabal">Cabal</a> - package manager for Haskell (Sorry, but from my point of view this is just a package manager, even though I heard somewhere that it's actually not)</li>
+</ul>
+<p>I guess if you never have experience with Haskell before, you shold definitely try to run 'ghci' and try out some Haskell coding. You can also could try it <a href="http://tryhaskell.org/">online</a>. If you want to learn Haskell more, which is really good, you can try an AWESOME book <a href="http://learnyouahaskell.com/">Learn you a Haskell for a Great Good</a>. But I want to share a small secret with you. You don't need to know Haskell at all to make your blog with Hakyll! If you have some programming experience (you can programm on some programming language and you know what VCS is) it will be more than enough to finish everything listed below. I would say that it could be more important to know HTML and CSS to customize website which will be generate by default, but more on that later.</p>
+<h1 id="step-2.-obtaining-hakyll">Step 2. Obtaining Hakyll</h1>
+<p>We are ready to get hakyll to become close to our goal. And <a href="http://www.haskell.org/cabal/" title="cabal">cabal</a> will help us with this. First of all, if our installation is fresh, it is a good idea to update cabal.</p>
+<pre class="prettyprint"><code>
+&gt; cabal install cabal-install
+</code></pre>
+<p>It will spend some time on updating information about it's packages, and we will be ready for our next magic command:</p>
+<pre class="prettyprint"><code>
+&gt; cabal install hakyll
+</code></pre>
+<p>And we are done! Or not. We should have hakyll after executing mentioned command, but I personally recevied an error that not everything went well and I haven't recevied greedily desired package. Unfortunally I didn't spend much time try to figure out that problem and just googled for error. And discovered that on Windows you probably need slightly different command to obtain hakyll:</p>
+<pre class="prettyprint"><code>
+&gt; cabal install --flags=&quot;-unixFilter&quot; --constraint=&quot;directory installed&quot; hakyll-X.X.
+X.X 
+</code></pre>
+<p>Instead of 'X.X.X.X' should be some version: check the latest <a href="http://hackage.haskell.org/package/hakyll" title="the hakyll package">here</a>. I could just assume that that error could happened if you are the Windows user like me :) And maybe one day I'll try to investigate that issue with more care. But you <strong>should</strong> be good after if not first, but after second command for sure.</p>
+<h1 id="step-3.-initializing-site">Step 3. Initializing site</h1>
+<p>Despite that this steps is rather clear described on <a href="http://jaspervdj.be/hakyll/tutorials/01-installation.html#building-the-example-site" title="install site">official hakyll page</a> I will repeat them here for consistency. Previous step should award us with hakyll package so we can navigate now, in console, to our amazing future personal page location and initialize it:</p>
+<pre class="prettyprint"><code>
+&gt; hakyll-init our_amazing_personal_site
+&gt; cd our_amazing_personal_site
+</code></pre>
+<p>Let' see what we've got.</p>
+<ul>
+<li>site.hs file contains haskell code which will be later compiled into executable file, which grant us with ability to build site and run local server for preview.</li>
+<li>index.html contains content for our <em>home</em> page.</li>
+<li>contact.markdown will be compiled into <em>contact</em> page.</li>
+<li>about.rst will be builed into <em>about</em> page.</li>
+<li><em>templates</em> folder contains various templates which will be compiled into our future page's parts and injected in specfied locations. Also here you can find <em>default.html</em> which is basically our master page.</li>
+<li><em>images</em> folder contains images</li>
+<li><em>posts</em> folder contains posts in <a href="http://daringfireball.net/projects/markdown/basics" title="markdown basics">.markdown</a> format.</li>
+<li><em>css</em> contains our default .css file and could serve as the only one spot to put your own future .css files.</li>
+</ul>
+<p>Of course you can change here everything, but before doing so please, make sure that you know haskell and read through site.hs. Also right now is a good moment to look around and check what is inside each of those files.</p>
+<p>We are ready to compile site.hs into an executable and build our site!</p>
+<pre class="prettyprint"><code>
+&gt; ghc --make site.hs
+&gt; site build
+</code></pre>
+<p>You can notice that more files appeared in our_amazing_personal_site folder.</p>
+<ul>
+<li><em>site.o</em>, <em>site.hi</em> and <em>site.exe</em> were produced by making site.hs file.</li>
+<li><em>_site</em> folder contains our compiled and ready to run site. You can go inside and open index.html in your favourite browser. Congrats! :)</li>
+<li><em>_cache</em> will contains cache information about visited site pages on localhost.</li>
+</ul>
+<p>If you installed <em>hakyll</em> with a preview server (this is default), you can now use</p>
+<pre class="prettyprint"><code>
+&gt; site preview
+</code></pre>
+<p>which will run local server and you can access you site at <a href="http://localhost:8000/" title="localhost">localhost</a>. In case site would complain about 8000 port busyness, you can run you server with:</p>
+<pre class="prettyprint"><code>
+&gt; site server --port=5050
+</code></pre>
+<p>and access you site from <a href="http://localhost:5050/">localhost</a>.</p>
+<h1 id="step-4.-preparing-repository">Step 4. Preparing repository</h1>
+<p>I hope that you already have your <a href="https://github.com/" title="github">github</a> account. If not, please go and register there. They have pretty 4-steps for newcommers. Anyway, after registering you account or simple log in you should create new repository for your_amazing_personal_site hosting. One important thing to remember, that name of repository should be in following format: <strong>[your github username].github.com</strong></p>
+<p>Now, run gitBush and navigate to ../our_amazing_personal_site/_site folder. We are going to create repository here.</p>
+<pre class="prettyprint"><code>
+$ git init
+$ git add .
+$ git commit -m &quot;my amazing personal page with hakyll init&quot;
+$ git remote add origin [repository address github gently provided you with]
+$ git push -u origin master
+</code></pre>
+<p>Phew... We've done this! :) You can go to your repository on github and check if your site source files are there. And you can of course just type <strong>[your github username].github.com</strong> in you favourite browser address row and observe your site!</p>
+<h1 id="instead-of-epilogue">Instead of Epilogue</h1>
+<p>I would like to apologize for my English. It is not my native language as you already figured out, but as my teacher once told me, it is could to start blogging and it will be improved. I hope it will be true :) Also I would like to give my apologies to all those amazing haskell programmers. In my blog-post I could said something wrong, or made some bad assumptions about haskell. If it is true, I'll try to be better next time :)</p>
+<p>Hope you've enjoyed.</p>
+
+            </article>
+            <footer>
+                Site proudly generated by
+                <a href="http://jaspervdj.be/hakyll">hakyll</a>
+            </footer>
+        </div>
+    </body>    
+</html>
